@@ -1,0 +1,11 @@
+USE FreelanceSystem;
+
+CREATE TABLE TeamsProjects
+(
+TeamId INT,
+ProjectId INT,
+FOREIGN KEY (TeamId) REFERENCES Teams(Id)
+	ON DELETE CASCADE,
+FOREIGN KEY (ProjectId) REFERENCES Projects(Id)
+	ON DELETE CASCADE
+);

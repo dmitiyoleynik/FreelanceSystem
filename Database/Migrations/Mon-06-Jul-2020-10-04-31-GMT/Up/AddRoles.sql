@@ -1,0 +1,7 @@
+USE FreelanceSystem;
+
+CREATE TABLE Roles
+(
+	Id INT PRIMARY KEY IDENTITY,
+	RoleName NVARCHAR(50) UNIQUE NOT NULL
+);

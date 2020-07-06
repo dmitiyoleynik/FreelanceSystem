@@ -1,0 +1,7 @@
+USE FreelanceSystem;
+
+CREATE TABLE UsersPermissions
+(
+Id INT PRIMARY KEY IDENTITY,
+Permission VARCHAR(255) NOT NULL UNIQUE
+);
