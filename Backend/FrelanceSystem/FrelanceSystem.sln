@@ -9,6 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrelanceSystem", "FrelanceS
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BussinessLayer", "BussinessLayer\BussinessLayer.csproj", "{A66F9BEB-0A28-4935-BE57-2B77FCFCB7C8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{19EF4DF4-ABC1-40E8-904B-F98BC2DDC6FE} = {19EF4DF4-ABC1-40E8-904B-F98BC2DDC6FE}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{19EF4DF4-ABC1-40E8-904B-F98BC2DDC6FE}"
 EndProject
