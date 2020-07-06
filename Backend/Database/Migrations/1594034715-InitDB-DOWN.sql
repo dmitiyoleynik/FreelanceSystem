@@ -21,13 +21,3 @@ DROP TABLE RolesPermissions;
 DROP TABLE Roles;
 
 DROP TABLE "Permissions";
-
-
-
-
-
-
-
-
-
-
