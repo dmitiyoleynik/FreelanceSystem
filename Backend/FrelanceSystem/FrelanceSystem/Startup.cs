@@ -1,6 +1,7 @@
 using BussinessLayer.Validators;
 using DataAccessLayer;
 using FrelanceSystem.SecurityKeys;
+using FrelanceSystem.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -36,10 +37,11 @@ namespace FrelanceSystem
                     .Build())
                 .CreateLogger();
 
-            services.AddSingleton<ILogger>(logger);
+            services.AddSingleton(logger);
             services.AddSingleton<IJwtSigningEncodingKey>(signingKey);
             services.AddTransient<IUsersValidator, UsersValidator>();
             services.AddTransient<IUsersManager, UsersManager>();
+            services.AddTransient<IJWTService, JWTService>();
 
             const string jwtSchemeName = "JwtBearer";
             var signingDecodingKey = (IJwtSigningDecodingKey)signingKey;

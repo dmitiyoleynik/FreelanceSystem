@@ -23,6 +23,6 @@ namespace DataAccessLayer.Models
 
         public string Location { get; set; }
 
-        public DateTime ExpirationDate { get; set; }
+        public DateTime? ExpirationDate { get; set; }
     }
 }

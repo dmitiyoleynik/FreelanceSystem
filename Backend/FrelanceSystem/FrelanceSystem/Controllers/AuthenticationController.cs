@@ -1,12 +1,8 @@
 ﻿using BussinessLayer.Validators;
-using FrelanceSystem.SecurityKeys;
+using FrelanceSystem.Services;
 using FrelanceSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace FrelanceSystem.Controllers
 {
@@ -14,34 +10,32 @@ namespace FrelanceSystem.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly int _tockenExpiration = 20;
+        private readonly IUsersValidator _usersValidator;
+        private readonly IJWTService _JWTService;
+
+        public AuthenticationController(IUsersValidator usersValidator,
+            IJWTService JWTService)
+        {
+            _usersValidator = usersValidator;
+            _JWTService = JWTService;
+        }
+
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult<string> Post(UserAuthData user,
-        [FromServices] IJwtSigningEncodingKey signingEncodingKey,
-        [FromServices] IUsersValidator usersValidator)
+        public ActionResult<string> Post(UserAuthData user)
         {
-            if (!usersValidator.IsExists(user.Login,user.Password))
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if (!_usersValidator.IsExists(user.Login, user.Password))
             {
                 return NotFound();
             }
 
-            var claims = new Claim[]
-            {
-            new Claim(ClaimTypes.NameIdentifier, user.Login)
-            };
+            string token = _JWTService.CreateTocken(user);
 
-            var jwtSecurityToken = new JwtSecurityToken(
-                issuer: "FreelanceSystem server",
-                audience: "FreelanceSystem client",
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(_tockenExpiration),
-                signingCredentials: new SigningCredentials(
-                        signingEncodingKey.GetKey(),
-                        signingEncodingKey.SigningAlgorithm)
-            );
-
-            string token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
             return new JsonResult(new { token });
         }
     }
