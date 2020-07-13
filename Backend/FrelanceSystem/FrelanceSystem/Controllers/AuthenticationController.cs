@@ -1,7 +1,6 @@
-﻿using BussinessLayer.Validators;
+﻿using BussinessLayer.Utils;
 using FrelanceSystem.Services;
 using FrelanceSystem.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FrelanceSystem.Controllers
@@ -10,33 +9,30 @@ namespace FrelanceSystem.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IUsersValidator _usersValidator;
-        private readonly IJWTService _JWTService;
+        private readonly IJWTService _jwtService;
+        private readonly IAccountUtils _accountUtils;
 
-        public AuthenticationController(IUsersValidator usersValidator,
-            IJWTService JWTService)
+        public AuthenticationController(IJWTService JWTService,
+            IAccountUtils accountUtils)
         {
-            _usersValidator = usersValidator;
-            _JWTService = JWTService;
+            _accountUtils = accountUtils;
+            _jwtService = JWTService;
         }
 
-        [AllowAnonymous]
         [HttpPost]
         public ActionResult<string> Post(UserAuthData user)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
+            var id = _accountUtils.Login(user.Login, user.Password);
 
-            if (!_usersValidator.IsExists(user.Login, user.Password))
+            if (id == null)
             {
                 return NotFound();
             }
-
-            string token = _JWTService.CreateTocken(user);
-
-            return new JsonResult(new { token });
+            else
+            {
+                string token = _jwtService.CreateToken(id);
+                return new JsonResult(new { token });
+            }
         }
     }
 }

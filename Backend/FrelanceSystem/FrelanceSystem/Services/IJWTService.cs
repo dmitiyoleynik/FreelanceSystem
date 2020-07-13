@@ -4,6 +4,6 @@ namespace FrelanceSystem.Services
 {
     public interface IJWTService
     {
-        string CreateTocken(UserAuthData user);
+        string CreateToken(string userId);
     }
 }

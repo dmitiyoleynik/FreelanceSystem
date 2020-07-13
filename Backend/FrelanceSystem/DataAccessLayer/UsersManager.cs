@@ -2,27 +2,34 @@
 using Serilog;
 using Dapper;
 using System.Linq;
+using BussinessLayer.Factories;
+using DataAccessLayer.Models;
 
 namespace DataAccessLayer
 {
-    public class UsersManager : SQLConnector, IUsersManager
+    public class UsersManager : IUsersManager
     {
-        public UsersManager(IConfiguration configuration,
-            ILogger logger) :
-            base(configuration, logger)
+        private readonly IConnectionFactory _connectionFactory;
+        public UsersManager(IConnectionFactory connectionFactory)
         {
+            _connectionFactory = connectionFactory;
         }
 
-        public string GetUserPassword(string email)
+        public User GetUser(string email)
         {
-            string getPasswordByEmailQuery = @"
-                SELECT ""Password"" from Users
+            string getUserQuery = @"
+                SELECT * from Users
                 WHERE Email = '{0}';
             ".Replace("{0}", email);
 
-            string password = _sqlConnection.Query<string>(getPasswordByEmailQuery).FirstOrDefault();
+            User user;
 
-            return password;
+            using (var _sqlConnection = _connectionFactory.CreateConnection())
+            {
+                user = _sqlConnection.Query<User>(getUserQuery).FirstOrDefault();
+            }
+
+            return user;
         }
     }
 }

@@ -3,6 +3,6 @@ namespace DataAccessLayer
 {
     public interface IUsersManager
     {
-        string GetUserPassword(string email);
+        User GetUser(string email);
     }
 }

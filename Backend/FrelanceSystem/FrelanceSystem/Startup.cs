@@ -1,4 +1,5 @@
-using BussinessLayer.Validators;
+using BussinessLayer.Factories;
+using BussinessLayer.Utils;
 using DataAccessLayer;
 using FrelanceSystem.SecurityKeys;
 using FrelanceSystem.Services;
@@ -39,9 +40,10 @@ namespace FrelanceSystem
 
             services.AddSingleton(logger);
             services.AddSingleton<IJwtSigningEncodingKey>(signingKey);
-            services.AddTransient<IUsersValidator, UsersValidator>();
             services.AddTransient<IUsersManager, UsersManager>();
             services.AddTransient<IJWTService, JWTService>();
+            services.AddSingleton<IConnectionFactory, ConnectionFactory>();
+            services.AddSingleton<IAccountUtils, AccountUtils>();
 
             const string jwtSchemeName = "JwtBearer";
             var signingDecodingKey = (IJwtSigningDecodingKey)signingKey;
