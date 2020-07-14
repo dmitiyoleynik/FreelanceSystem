@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Serilog;
@@ -14,7 +15,7 @@ namespace BussinessLayer.Factories
             ILogger logger)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public IDbConnection CreateConnection()

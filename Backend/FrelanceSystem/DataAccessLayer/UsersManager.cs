@@ -3,6 +3,7 @@ using Dapper;
 using System.Linq;
 using BussinessLayer.Factories;
 using DataAccessLayer.Models;
+using System;
 
 namespace DataAccessLayer
 {
@@ -13,7 +14,7 @@ namespace DataAccessLayer
         public UsersManager(IConnectionFactory connectionFactory,
             ILogger logger)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger)); 
             _connectionFactory = connectionFactory;
         }
 

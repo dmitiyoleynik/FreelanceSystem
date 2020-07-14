@@ -29,7 +29,7 @@ namespace FrelanceSystem
             services.AddControllers();
             services.AddSwaggerGen();
 
-            const string signingSecurityKey = "0d5b3235a8b403c3dab9c3f4f65c07fcalskd234ns4t1230";
+            string signingSecurityKey = Configuration.GetValue<string>("SecurityKey");
             var signingKey = new SigningSymmetricKey(signingSecurityKey);
 
             ILogger logger = new LoggerConfiguration()
@@ -40,8 +40,8 @@ namespace FrelanceSystem
 
             services.AddSingleton(logger);
             services.AddSingleton<IJwtSigningEncodingKey>(signingKey);
-            services.AddTransient<IUsersManager, UsersManager>();
-            services.AddTransient<IJWTService, JWTService>();
+            services.AddSingleton<IUsersManager, UsersManager>();
+            services.AddSingleton<IJWTService, JWTService>();
             services.AddSingleton<IConnectionFactory, ConnectionFactory>();
             services.AddSingleton<IAccountUtils, AccountUtils>();
 
