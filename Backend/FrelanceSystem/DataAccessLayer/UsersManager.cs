@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Serilog;
+﻿using Serilog;
 using Dapper;
 using System.Linq;
 using BussinessLayer.Factories;
@@ -9,9 +8,12 @@ namespace DataAccessLayer
 {
     public class UsersManager : IUsersManager
     {
+        private readonly ILogger _logger;
         private readonly IConnectionFactory _connectionFactory;
-        public UsersManager(IConnectionFactory connectionFactory)
+        public UsersManager(IConnectionFactory connectionFactory,
+            ILogger logger)
         {
+            _logger = logger;
             _connectionFactory = connectionFactory;
         }
 
@@ -28,6 +30,7 @@ namespace DataAccessLayer
             {
                 user = _sqlConnection.Query<User>(getUserQuery).FirstOrDefault();
             }
+            _logger.Debug("Get @user", user);
 
             return user;
         }
