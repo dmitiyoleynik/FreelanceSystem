@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FrelanceSystem.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace FrelanceSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult<string> Post(UserAuthData user)
+        public ActionResult<string> Login(UserAuthData user)
         {
             var id = _accountUtils.Login(user.Login, user.Password);
 
